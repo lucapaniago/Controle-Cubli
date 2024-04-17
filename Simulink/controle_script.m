@@ -10,6 +10,10 @@ Ic = [0.0131738	0	0;
         0	0.0131738	0;
         0	0	0.0038925];
 Ic_inv = inv(Ic);
+T_RW2C = [1,1,1;
+        1,0,-1;
+        0,1,-1]; %Matriz de transformação entre ...
+%Sistema de coordenadas de Controle e Sistema de Coordenadas em relação às RW
 
 rc = [0;0;0.2864]; %Centro de Massa
 
