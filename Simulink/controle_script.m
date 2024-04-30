@@ -6,16 +6,27 @@ clear all
 b = 17.03*10^(-6); %Atrito Viscoso Ponto de Contato
 g = [0;0;-9.81]; %Gravidade
 mc = 0.55; %Mass Cubli
+Ic_norm = [0.01008	-0.00309375	-0.00309375;
+-0.00309375	0.01008	-0.00309375;
+-0.00309375	-0.00309375	0.01008];
+[eigvec,a] = eig(Ic_norm);
 Ic = [0.0131738	0	0;
         0	0.0131738	0;
         0	0	0.0038925];
 Ic_inv = inv(Ic);
-T_RW2C = [1,1,1;
-        1,0,-1;
-        0,1,-1]; %Matriz de transformação entre ...
+A = eigvec(:,1);
+B = eigvec(:,2);
+C = eigvec(:,3);
+T_RW2C = [C,B,A]';
+
+
+
+
+
+% T_RW2C = normalize([-1,1,0;-1,0,1;1,1,1],"norm",2);     %Matriz de transformação entre ...
 %Sistema de coordenadas de Controle e Sistema de Coordenadas em relação às RW
 
-rc = [0;0;0.2864]; %Centro de Massa
+rc = [0;0;norm([0.0954545, 0.0954545, 0.0954545])]; %Centro de Massa
 
 
 %% Sistema de Referência Modelagem inicial

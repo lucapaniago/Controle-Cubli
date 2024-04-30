@@ -11,13 +11,11 @@ B = [0.	0.	0.;
 75.9085	0.	0.;
 0.	75.9085	0.;
 0.	0.	256.904];
-C = [1	0	0	0	0	0
-    0	1	0	0	0	0;
-    0	0	1	0	0	0;
-    0	0	0	1	0	0;
+C = [0	0	0	1	0	0;
     0	0	0	0	1	0;
     0	0	0	0	0	1];
-D = zeros(6,3);
+D = zeros(3,3);
+E = B;
 sys = ss(A,B,C,D);
 
 % h = pzplot(sys);
@@ -25,45 +23,42 @@ sys = ss(A,B,C,D);
 P = pole(sys);
 
 %% Alocação de Polos
-% p = [-20,-30,-40,-5,-6,-7];
-% K = place(A,B,p);
-% sys_lin = ss(A-B*K,B,C,D);
-% t = linspace(0,4,1000);
-% x0 = [0.2;0.1;0.14;1.2;1.2;1.2];
-% y = lsim(sys_lin,zeros(3,1000),t,x0);
-% u = -K*(y');
-% figure(1)
-% plot(t,y(:,1:3),"LineWidth",1.5)
-% title("Resposta Dinâmica da Atitude em quaternions",'FontSize',12)
-% xlabel("Tempo [s]","FontSize",12)
-% ylabel("Quaternion","FontSize",12)
-% legend("$q_1$","$q_2$","$q_3$","Interpreter",'latex','FontSize',12)
-% figure(2)
-% plot(t,y(:,4:6),"LineWidth",1.5)
-% title("Resposta Dinâmica das Velocidades Angulares",'FontSize',12)
-% xlabel("Tempo [s]","FontSize",12)
-% ylabel("Velocidadas Angulares [rad/s]","FontSize",12)
-% legend("$\omega_x$","$\omega_y$","$\omega_z$","Interpreter",'latex','FontSize',12)
-% figure(3)
-% u = -K*(y');
-% plot(t,u(1:3,:),"LineWidth",1.5)
-% title("Entradas de Torque pelas Rodas de Reação",'FontSize',12)
-% xlabel("Tempo [s]","FontSize",12)
-% ylabel("Torque [N.m~]","FontSize",12)
-% legend("$\tau_x$","$\tau_y$","$\tau_z$","Interpreter",'latex','FontSize',12)
+p = [-5,-6,-7,-3,-4,-1];
+K = place(A,B,p);
 
-% figure(2)
 
-% h1 = pzplot(sys_lin);
+
 
 %% LQR
-Q = [5,0,0,0,0,0;
-    0,5,0,0,0,0;
-    0,0,5,0,0,0;
-    0,0,0,0.1,0,0;
-    0,0,0,0,0.1,0;
-    0,0,0,0,0,0.1];
-R = eye(3,3);
-K = lqr(sys,Q,R);
-sys_lin = ss(A-B*K,B,C,D);
+% Q = [3,0,0,0,0,0;
+%     0,3,0,0,0,0;
+%     0,0,3,0,0,0;
+%     0,0,0,0.1,0,0;
+%     0,0,0,0,0.1,0;
+%     0,0,0,0,0,0.1];
+% R = 5*eye(3,3);
+% K = lqr(sys,Q,R);
+%% Simulação
+sys_lin = ss(A-B*K,E,C,D);
+t = linspace(0,10,1000);
+x0 = [0.5;0.1;0.14;1.2;1.2;1.2];
+impulseX = zeros(1,1000);
+impulseX(1,500) = 0.5;
+impulseY = zeros(1,1000);
+impulseY(1,250) = 0.5;
+impulseZ = zeros(1,1000);
+impulseZ(1,750) = 0.2;
+% w = zeros(3,length(t));
+w = [impulseX;impulseY;impulseZ]';
+[y,t,x] = lsim(sys_lin,w,t,x0);
+u = -K*(x');
 pole(sys_lin)
+h1 = pzplot(sys_lin);
+
+
+q1 = x(:,1);
+q2=x(:,2);
+q3=x(:,3);
+q0 = sqrt(1 - q1.^2 - q2.^2 - q3.^2);
+quat = [q0,q1,q2,q3];
+euler = quat2eul(quat)*180/pi; %degress
