@@ -23,33 +23,33 @@ sys = ss(A,B,C,D);
 P = pole(sys);
 
 %% Alocação de Polos
-p = [-5,-6,-7,-3,-4,-1];
+p = [-10,-2,-3,-4,-6,-8];
 K = place(A,B,p);
 
 
 
 
 %% LQR
-% Q = [3,0,0,0,0,0;
-%     0,3,0,0,0,0;
-%     0,0,3,0,0,0;
-%     0,0,0,0.1,0,0;
-%     0,0,0,0,0.1,0;
-%     0,0,0,0,0,0.1];
-% R = 5*eye(3,3);
+% Q = [1,0,0,0,0,0;
+%     0,1,0,0,0,0;
+%     0,0,1,0,0,0;
+%     0,0,0,1,0,0;
+%     0,0,0,0,1,0;
+%     0,0,0,0,0,1];
+% R = 500*eye(3,3);
 % K = lqr(sys,Q,R);
 %% Simulação
 sys_lin = ss(A-B*K,E,C,D);
 t = linspace(0,10,1000);
-x0 = [0.5;0.1;0.14;1.2;1.2;1.2];
+x0 = [0.05;0.1;0.14;0.1;0.1;0.1];
 impulseX = zeros(1,1000);
 impulseX(1,500) = 0.5;
 impulseY = zeros(1,1000);
 impulseY(1,250) = 0.5;
 impulseZ = zeros(1,1000);
 impulseZ(1,750) = 0.2;
-% w = zeros(3,length(t));
-w = [impulseX;impulseY;impulseZ]';
+w = zeros(3,length(t));
+% w = [impulseX;impulseY;impulseZ]';
 [y,t,x] = lsim(sys_lin,w,t,x0);
 u = -K*(x');
 pole(sys_lin)
