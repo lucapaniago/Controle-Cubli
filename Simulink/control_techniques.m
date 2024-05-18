@@ -11,49 +11,49 @@ B = [0.	0.	0.;
 75.9085	0.	0.;
 0.	75.9085	0.;
 0.	0.	256.904];
-C = [0	0	0	1	0	0;
-    0	0	0	0	1	0;
-    0	0	0	0	0	1];
+C = [1	0	0	0	0	0;
+    0	1	0	0	0	0;
+    0	0	1	0	0	0];
 D = zeros(3,3);
 E = B;
-sys = ss(A,B,C,D);
+sys_cont = ss(A,B,C,D);
 
-% h = pzplot(sys);
+% h = pzplot(sys_cont);
 % hold on
-P = pole(sys);
+P = pole(sys_cont);
 
 %% Alocação de Polos
-p = [-10,-2,-3,-4,-6,-8];
-K = place(A,B,p);
+p = [-7,-7 + 2j,-7 - 2j,-6,-6+3j,-6-3j];
+% K = place(A,B,p);
 
 
 
 
 %% LQR
-% Q = [1,0,0,0,0,0;
-%     0,1,0,0,0,0;
-%     0,0,1,0,0,0;
-%     0,0,0,1,0,0;
-%     0,0,0,0,1,0;
-%     0,0,0,0,0,1];
-% R = 500*eye(3,3);
-% K = lqr(sys,Q,R);
+Q = [2,0,0,0,0,0;
+    0,2,0,0,0,0;
+    0,0,2,0,0,0;
+    0,0,0,0.1,0,0;
+    0,0,0,0,0.1,0;
+    0,0,0,0,0,0.1];
+R = 50*eye(3,3);
+K = lqr(sys_cont,Q,R);
 %% Simulação
 sys_lin = ss(A-B*K,E,C,D);
 t = linspace(0,10,1000);
-x0 = [0.05;0.1;0.14;0.1;0.1;0.1];
+x0 = [q00(2);q00(3);q00(4);w00(1);w00(2);w00(3)];
 impulseX = zeros(1,1000);
-impulseX(1,500) = 0.5;
+impulseX(1,500) = 1.2;
 impulseY = zeros(1,1000);
-impulseY(1,250) = 0.5;
+impulseY(1,250) = 1.2;
 impulseZ = zeros(1,1000);
-impulseZ(1,750) = 0.2;
+impulseZ(1,750) = 1.2;
 w = zeros(3,length(t));
 % w = [impulseX;impulseY;impulseZ]';
 [y,t,x] = lsim(sys_lin,w,t,x0);
 u = -K*(x');
 pole(sys_lin)
-h1 = pzplot(sys_lin);
+% h1 = pzplot(sys_lin);
 
 
 q1 = x(:,1);

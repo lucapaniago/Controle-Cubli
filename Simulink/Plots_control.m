@@ -1,4 +1,4 @@
-    %% Plot da resposta dinâmica controlada linear
+%% Plot da resposta dinâmica controlada linear
 
 figure(1)
 plot(t,y(:,1:3),"LineWidth",1.5)
