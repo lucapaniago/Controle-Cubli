@@ -22,9 +22,9 @@ legend("$\tau_x$","$\tau_y$","$\tau_z$","Interpreter",'latex','FontSize',12)
 
 figure(4)
 plot(t,euler(:,1:3),"LineWidth",1.5)
-title("Resposta Dinâmica da Atitude em Ângulos de Euler (XYZ)",'FontSize',12)
+title("Resposta Dinâmica da Atitude em Ângulos de Euler (ZYX)",'FontSize',12)
 xlabel("Tempo [s]","FontSize",12)
-ylabel("Ângulo de Euler","FontSize",12)
+ylabel("Ângulo de Euler [º]","FontSize",12)
 legend("$\phi$","$\theta$","$\psi$","Interpreter",'latex','FontSize',12)
 
 %% Plot da resposta dinâmica controlada não linear
