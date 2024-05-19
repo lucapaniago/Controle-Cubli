@@ -48,14 +48,14 @@ hold on
 
 %% Seguidor Variável Exógena
 %Seno
-%w = 2
-
+ws = 2;
+zeta = 0.4;
 A_r = [0,0,0,0.5,0,0;
         0,0,0,0,0.5,0;
         0,0,0,0,0,0.5;
-        -8,0,0,0,0,0;
-        0,-8,0,0,0,0;
-        0,0,-8,0,0,0];
+        -8,0,0,-2*zeta,0,0;
+        0,-8,0,0,-2*zeta,0;
+        0,0,-8,0,0,-2*zeta];
 %Degrau
 % A_r = [0,0,0,0.5,0,0;
 %         0,0,0,0,0.5,0;
@@ -115,13 +115,13 @@ legend("$\tau_x$","$\tau_y$","$\tau_z$","Interpreter",'latex','FontSize',12)
 grid on
 figure
 plot(t,euler(:,1:3),"LineWidth",1.5)
-title("Resposta Dinâmica da Atitude em Ângulos de Euler (XYZ)",'FontSize',12)
+title("Resposta Dinâmica da Atitude em Ângulos de Euler (ZYX)",'FontSize',12)
 xlabel("Tempo [s]","FontSize",12)
 ylabel("Ângulo de Euler [º]","FontSize",12)
 hold on
-plot(t,5*sin(2*t),'b--',"LineWidth",1.75)
-plot(t,7*sin(2*t),'r--',"LineWidth",1.75)
-plot(t,2*sin(2*t),'y--',"LineWidth",1.75)
+plot(t,5*exp(-zeta*t).*cos(ws*t),'b--',"LineWidth",1.75)
+plot(t,7*exp(-zeta*t).*cos(ws*t),'r--',"LineWidth",1.75)
+plot(t,2*exp(-zeta*t).*cos(ws*t),'y--',"LineWidth",1.75)
 grid on
 
 legend("$\phi$","$\theta$","$\psi$","$\phi_{ref}$","$\theta_{ref}$","$\psi_{ref}$","Interpreter",'latex','FontSize',12)
