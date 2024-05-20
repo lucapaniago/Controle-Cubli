@@ -30,7 +30,7 @@ P = pole(sys_cont);
 
 %% Alocação de Polos
 p = [-4,-4 + 1j,-4-1j,-2.5,-2.5+1j,-2.5-1j];
-K = place(A,B,p);
+% K = place(A,B,p);
 
 
 
@@ -59,9 +59,10 @@ w = [impulseX;impulseY;impulseZ]';
 [y,t,x] = lsim(sys_lin,w,t,x0);
 u = -K*(x');
 pole(sys_lin)
-% h1 = pzplot(sys_lin);
-
-
+h1 = pzplot(sys_lin);
+pp = getoptions(h1);
+pp.Title.String= "Pole Map";
+setoptions(h1,pp);
 q1 = x(:,1);
 q2=x(:,2);
 q3=x(:,3);
