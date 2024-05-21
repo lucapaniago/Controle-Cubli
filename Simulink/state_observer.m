@@ -18,10 +18,10 @@ B2 = V*B;
 % p_obs = [-5,-5+1j,-5-1j]; %PP
 p_obs = [-11,-11+j,-11-j];%LQR
 
-% J = place(A22.',A12.',p_obs);
-Q_obs =diag([5,9,7]);
-R_obs = eye(3,3);
-J = lqr(A22.',A12.',Q_obs,R_obs);
+J = place(A22.',A12.',p_obs);
+% Q_obs =diag([5,9,7]);
+% R_obs = eye(3,3);
+% J = lqr(A22.',A12.',Q_obs,R_obs);
 
 F = A22 - J*A12;
 eig(F)
