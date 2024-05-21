@@ -30,7 +30,7 @@ P = pole(sys_cont);
 
 %% Alocação de Polos
 p = [-4,-4 + 1j,-4-1j,-2.5,-2.5+1j,-2.5-1j];
-% K = place(A,B,p);
+K = place(A,B,p);
 % 
 
 
@@ -43,7 +43,7 @@ Q = [5,0,0,0,0,0;
     0,0,0,0,0.001,0;
     0,0,0,0,0,0.001]*1e-1;
 R = 20*eye(3,3);
-K = lqr(sys_cont,Q,R);
+% K = lqr(sys_cont,Q,R);
 %% Simulação
 sys_lin = ss(A-B*K,E,C,D);
 t = linspace(0,12,1200);

@@ -64,5 +64,12 @@ legend("$\phi$","$\theta$","$\psi$","Interpreter",'latex','FontSize',12)
 grid on
 saveas(gcf,'EulAng.png')
 
-
+figure(8)
+plot(t,w_x-w_x_hat,t,w_y-w_y_hat,t,w_z-w_z_hat,"LineWidth",1.5)
+title("Erros de estimação das velocidades angulares",'FontSize',12)
+xlabel("Tempo [s]","FontSize",12)
+ylabel("Erro das Velocidadas Angulares [rad/s]","FontSize",12)
+grid on
+legend("$\varepsilon_{\omega x}$","$\varepsilon_{\omega y}$","$\varepsilon_{\omega z}$","Interpreter",'latex','FontSize',14)
+saveas(gcf,'erro.png')
 %% Plot da resposta dinâmica controlada não linear
