@@ -9,9 +9,9 @@ mc = 0.55; %Mass Cubli
 Ic_norm = [0.01008	-0.00309375	-0.00309375;
 -0.00309375	0.01008	-0.00309375;
 -0.00309375	-0.00309375	0.01008];
-[Q_RW2C,Ic] = eig(Ic_norm);
+[Q_C2RW,Ic] = eig(Ic_norm);
 
-[Ic,Q_RW2C] = b2c_checker(Ic,Q_RW2C);
+[Ic,Q_C2RW] = b2c_checker(Ic,Q_C2RW);
 
 Ic_inv = inv(Ic);
 
