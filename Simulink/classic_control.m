@@ -21,7 +21,7 @@ E = B;
 sys_cont = ss(A,B,C,D);
 tf_q = tf(sys_cont);
 G_p = tf_q(2,2);
-p_q2 = pole(G_p);
+p_q2 = pole(sys_cont);
 
 
 %% ZN Method
@@ -100,7 +100,7 @@ title("Entradas de controle $\tau_y$", 'Interpreter','Latex','FontSize',13)
 ylabel("$\tau_y/q_{2ref}$",'Interpreter','Latex','FontSize',15)
 xlabel("Tempo [s]",'FontSize',13,'Interpreter','Latex')
 legend("Sem pré-compensador","Com pré-compensador",'FontSize',12)
-
+%Supondo referência de q_2 = 0.1
 figure(3)
 
 plot(t1,q2_ref*q2,"LineWidth",1.5)
