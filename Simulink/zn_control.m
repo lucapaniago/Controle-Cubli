@@ -20,7 +20,7 @@ C = [1	0	0	0	0	0;
     0	0	1	0	0	0];
 D = zeros(3,3);
 E = B;
-p = [2,-1-5j,-2.5,-0.5+0.5j,-0.5-0.5j,-1+5j];
+p = [0,0.2,-0.5-j,-0.1+0.5j,-0.1-0.5j,-0.5+j];
 K = place(A,B,p);
 A_bar = A - B*K;
 sys_cont = ss(A_bar,B,C,D);
@@ -38,7 +38,7 @@ p_Kc_coef=flip(coeffs(p_Kc,s));
 rh_Kc = routh(p_Kc_coef,eps);
 S = solve(rh_Kc(6,1)==0,Kc);
 
-Ku = 0.90337226204908848270845329711761;
+Ku = 0.20101366891278826605964385390219;
 tf_CL_crt=feedback(Ku*G_p,1);
 pole_cl_crt=pole(tf_CL_crt);
 [q_crt,t_crt]=step(tf_CL_crt,linspace(0,50,2000));
@@ -54,10 +54,10 @@ N_d = 100;
 G_c_ZN = Kc_ZN*(1+tf([1],[t_i,0]) + tf([t_d,0],[t_d/N_d,1]));
 FT_CL=feedback(G_c_ZN*G_p,1);
 pole_cl = pole(FT_CL);
-[q_zn,t] = step(FT_CL,ts);
+[q_zn,t] = step(FT_CL);
 
 Frt = feedback(G_c_ZN,G_p,-1); %Funcao de transferencia entre entrada de controle e referencia
-[u_zn,t] = step(Frt,ts);
+[u_zn,tu] = step(Frt);
 q1_ref = 0.1;
 figure(1)
 plot(t,q_zn,"LineWidth",1.5)
@@ -73,14 +73,14 @@ xlabel("Tempo [s]",'FontSize',13,'Interpreter','Latex')
 
 figure(3)
 
-plot(t(10:end,1),u_zn(10:end,1),"LineWidth",1.5)
+plot(tu(10:end,1),u_zn(10:end,1),"LineWidth",1.5)
 title("Entradas de controle $\tau_x$", 'Interpreter','Latex','FontSize',13)
 ylabel("$\tau_x/q_{1ref}$",'Interpreter','Latex','FontSize',15)
 xlabel("Tempo [s]",'FontSize',13,'Interpreter','Latex')
 
 figure(4)
 
-plot(t(10:end,1),q1_ref*u_zn(10:end,1),"LineWidth",1.5)
+plot(tu(10:end,1),q1_ref*u_zn(10:end,1),"LineWidth",1.5)
 title("Entradas de controle $\tau_x$", 'Interpreter','Latex','FontSize',13)
 ylabel("$\tau_x$",'Interpreter','Latex','FontSize',15)
 xlabel("Tempo [s]",'FontSize',13,'Interpreter','Latex')

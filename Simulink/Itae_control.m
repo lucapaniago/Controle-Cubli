@@ -18,7 +18,7 @@ C = [1	0	0	0	0	0;
     0	0	1	0	0	0];
 D = zeros(3,3);
 E = B;
-p = [2,-1-5j,-2.5,-0.5+0.5j,-0.5-0.5j,-1+5j];
+p = [1,-0.7-2.5j,0,-0.4+0.5j,-0.4-0.5j,-0.7+2.5j];
 K = place(A,B,p);
 A_bar = A - B*K;
 sys_cont = ss(A_bar,B,C,D);
@@ -28,8 +28,8 @@ p_gp = pole(sys_cont);
 
 %% ITAE
 
-initial_params = [0.6*0.9, 1.12, 0.5]; % Parametros iniciais para processo de minimização
-options = optimoptions('fmincon','MaxFunctionEvaluations',7e+9,'MaxIterations',8e+9);
+initial_params = [1,0.7,1.5]; % Parametros iniciais para processo de minimização
+options = optimoptions('fmincon','MaxFunctionEvaluations',7e+26,'MaxIterations',8e+26,'StepTolerance',1e-18);
 result = fmincon(@ITAE,initial_params,[],[],[],[],[],[],[],options);
 %Parametros PID
 Kp = result(1); 
@@ -49,7 +49,7 @@ p_f = pole(T_f);%Polos em malha fechada com o filtro
 Frt = feedback(G_c,G_p,-1); %Funcao de transferencia entre entrada de controle e referencia
 Frt_f = series(G_f,Frt);% Com filtro
 
-ts = linspace(0,25,1000);
+ts = linspace(0,35,1000);
 
 [q1,t1] = step(T,ts);
 [u,t2] = step(Frt,ts);
