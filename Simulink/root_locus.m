@@ -1,31 +1,55 @@
-clc
-clear all
-A =[0	0	0	0.5	0	0;
-0	0	0	0	0.5	0;
-0	0	0	0	0	0.5;
-134.697	4.61732	0	-0.00126849	-0.0000419712	-0.0000859303;
-4.61732	129.366	0	-0.0000419712	-0.00122003	0.000148836;
-2.59264	-4.49059	0	-0.0000859303	0.000148836	-0.00617827];
+%% PID via Root Locus
+K_l0 = 37.248;
+L_0 = tf([0,0,37.2428000000000,44.1077252817023,199.004232783142,56.5658583247018,49.9538633901049],[1,1.19999999999997,6.06999999999997,-2.30399999999996,-3.20259999999930,-2.76339999999981,0])/K_l0;
 
-B=[0	0	0;
-0	0	0;
-0	0	0;
-74.4856	2.46455	5.04582;
-2.46455	71.6398	-8.73961;
-5.04582	-8.73961	362.787];
+G_c_PI = tf([91,14],[6.5,0]);
 
-C = [1	0	0	0	0	0;
-    0	1	0	0	0	0;
-    0	0	1	0	0	0];
-D = zeros(3,3);
-E = B;
-p = [2,-1-5j,-2.5,-0.5+0.5j,-0.5-0.5j,-1+5j];
-K = place(A,B,p);
-A_bar = A - B*K;
-sys_cont = ss(A_bar,B,C,D);
-tf_q = tf(sys_cont);
-G_p = tf_q(1,1);
-p_gp = pole(sys_cont);
+G_c_PID = tf([1.081e5,1.17e5,1.8e4],[6,6500,0]);
+
+G_c_PD = tf([6160,1e+4],[0.6154,1000]);
+
+T_pi = feedback(G_c_PI*L_0,1);
+T_pd = feedback(G_c_PD*L_0,1);
+T_pid = feedback(G_c_PID*L_0,1);
+
+opts = bodeoptions;
+opts.YLabel.FontSize = 11;
+opts.YLabel.FontSize = 11;
+opts.TickLabel.FontSize = 9;
+opts.FreqUnits = 'rad/s';
+opts.XLim = [0.1,10];
+opts.Grid = 'on';
+opts.Title.FontSize = 11;
 
 
-sisotool(G_p)
+
+% Bode Malha Aberta
+figure
+opts.Title.String = " Margens de Estabilidade PI";
+margin(G_c_PI*L_0,opts)
+figure
+opts.Title.String = " Margens de Estabilidade PD";
+margin(G_c_PD*L_0,opts)
+figure
+opts.Title.String = " Margens de Estabilidade PID";
+
+margin(G_c_PID*L_0,opts)
+
+
+
+%% Bode Malha Fechada
+% figure
+% bode(T_pi,opts)
+% hold on
+% bode(T_pd,opts)
+% bode(T_pid,opts)
+% legend("PI","PD","PID");
+% grid on
+% bd_pi = bandwidth(T_pi);
+% bd_pd = bandwidth(T_pd);
+% bd_pid = bandwidth(T_pid);
+
+
+
+
+

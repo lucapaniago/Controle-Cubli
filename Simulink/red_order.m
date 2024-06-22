@@ -24,10 +24,12 @@ sys_cont = ss(A_bar,B,C,D);
 tf_q = tf(sys_cont);
 G_p = tf_q(1,1);
 opts = balredOptions('Offset',0.001,'StateProjection','Truncate');
-G_pr = balred(G_p,4,opts),
+G_pr = balred(G_p,5,opts);
 bode(G_p)
 hold on 
 bode(G_pr)
 figure
 rlocus(G_pr)
+figure
+rlocus(G_p)
 

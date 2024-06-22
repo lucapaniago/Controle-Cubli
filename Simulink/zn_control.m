@@ -20,14 +20,19 @@ C = [1	0	0	0	0	0;
     0	0	1	0	0	0];
 D = zeros(3,3);
 E = B;
+sys_orig = ss(A,B,C,D);
+tf_orig = tf(sys_orig);
+tf_1 = tf_orig(1,1);
+figure(1)
+rlocus(tf_1)
 p = [1,-0.7-2.5j,0,-0.4+0.5j,-0.4-0.5j,-0.7+2.5j];
 K = place(A,B,p);
 A_bar = A - B*K;
 sys_cont = ss(A_bar,B,C,D);
-tf_q = tf(sys_cont);
+tf_q = tf(sys_cont);    
 G_p = tf_q(1,1);
 p_gp = pole(sys_cont);
-
+figure(2)
 rlocus(G_p)
 %% ZN Method
 ts=linspace(0,150,1000);
@@ -53,6 +58,8 @@ t_d = Pu/8;
 N_d = 100;
 G_c_ZN = Kc_ZN*(1+tf([1],[t_i,0]) + tf([t_d,0],[t_d/N_d,1]));
 FT_CL=feedback(G_c_ZN*G_p,1);
+
+stepinfo(FT_CL)
 pole_cl = pole(FT_CL);
 [q_zn,t] = step(FT_CL);
 
