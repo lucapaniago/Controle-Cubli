@@ -15,9 +15,9 @@ T_pid = feedback(G_c_PID*L_0,1);
 opts = bodeoptions;
 opts.YLabel.FontSize = 11;
 opts.YLabel.FontSize = 11;
-opts.TickLabel.FontSize = 9;
+opts.TickLabel.FontSize = 10;
 opts.FreqUnits = 'rad/s';
-opts.XLim = [0.1,10];
+opts.XLim = [0.1,20];
 opts.Grid = 'on';
 opts.Title.FontSize = 11;
 

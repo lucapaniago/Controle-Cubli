@@ -9,21 +9,29 @@ L_1 = G_lead*L_0;
 figure(1)
 margin(L_0)
 figure(2)
-margin(L_1)
+margin(L_1,opts)
 
-%% Compensador de atras-avanço
+%% Compensador de atraso-avanço
 
-G_ll = tf([19.43,5.638,0.2333],[1,1.173,0.005839]);
-L_2 = L_0*G_ll;
+G_lag = tf([3.982,1],[7.841,1]);
+L_2 = L_0*G_lag*G_lead;
+opts = bodeoptions;
+opts.YLabel.FontSize = 11;
+opts.YLabel.FontSize = 11;
+opts.TickLabel.FontSize = 10;
+opts.FreqUnits = 'rad/s';
+opts.XLim = [0.1,10];
+opts.Grid = 'on';
+opts.Title.FontSize = 11;
 
 figure(3)
-margin(L_2)
+margin(L_2,opts)
 
 %% Malha Fechada - Avanço
 
 G_cl_y = feedback(G_lead*L_0,1);
 
-bode(G_cl_y)
+bode(G_cl_y,opts)
 grid on
 
 
